@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Welcome Page</title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    </h:head>
+    <h:body>
+        <!-- Login Form! -->
+        <h1>Welcome</h1>
+        <h:form id="login" rendered="#{loginBean.loginFormActive}">
+            <h:panelGrid columns="2" 
+                         styleClass="loginForm">
+                Username:
+                <h:inputText value="#{loginBean.username}" required="true"
+                             requiredMessage="Username required."/>
+                
+                Password:
+                <h:inputSecret value="#{loginBean.password}" required="true"
+                               requiredMessage="Password required."/>
+                
+                <h:commandButton value="Log In" action="#{loginBean.login()}"/>
+            </h:panelGrid>
+        </h:form>
+        <h:message for="login"/>
+        <h:form rendered="#{loginBean.loginFormActive}">
+        <h:commandButton value="Don't have an account? Click me to sign up!"
+                             action="#{loginBean.swapForms()}"/>
+        </h:form>
+        
+        <!-- Signup Form! -->
+        <h:form id="signup" rendered="#{not loginBean.loginFormActive}">
+            <h:panelGrid columns="2"
+                         styleClass="signupForm">
+                Username:
+                <h:inputText value="#{signupBean.username}" required="true" size="25"
+                             requiredMessage="A valid, unique username is required."/>
+                
+                Password:
+                <h:inputSecret value="#{signupBean.password}" required="true" size="25"
+                               requiredMessage="A valid password is required."/>
+                
+                Confirm Password:
+                <h:inputSecret value="#{signupBean.confirmPassword}" rendered="true" size="25"
+                               requiredMessage="Please enter your desired password again."/>
+                
+                Email Address:
+                <h:inputText value="#{signupBean.email}" required="true"
+                             requiredMessage="A valid email address is required."
+                             validatorMessage="Invalid Email">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                </h:inputText>
+                
+                <h:commandButton value="Sign up" action="#{signupBean.signup()}"/>
+            </h:panelGrid>
+        </h:form>
+        <h:message for="signup"/>
+        <h:form rendered="#{not loginBean.loginFormActive}">
+            <h:commandButton value="Aleady have an account? Click me to login!"
+                             action="#{loginBean.swapForms()}"/>
+        </h:form>
+    </h:body>
+</html>

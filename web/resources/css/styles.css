@@ -1,0 +1,71 @@
+/* LOGIN PAGE SHIT - "welcome.xhtml" */
+
+.loginForm {
+    border: 10px darkcyan double;
+    padding: 5px;
+}
+
+.signupForm {
+    border: 10px darkgoldenrod double;
+    padding: 5px;
+}
+
+/* ITEMIZER SHIT - "itemizer.xhtml" */
+
+.table {
+    border: thin solid black;
+}
+.tableHeader {
+    text-align: center;
+    font-style: italic;
+    color: snow;
+    background: teal;
+    padding: 5px;
+}
+.tableFooter {
+    text-align: center;
+    font-style: italic;
+    color: snow;
+    background: black;
+    padding: 5px;
+}
+.dangerZone {
+    background-color: red;
+    color: white;
+    border: yellow dashed 2px;
+}
+.delete {
+    background: red;
+    text-align: center;
+}
+.edit {
+    background: navy;
+    text-align: center;
+}
+.id {
+    background: black;
+    color: white;
+    text-align: center;
+}
+.name {
+    text-align: center;
+    background: mediumTurquoise;
+    width: 150px;
+}
+.price {
+    text-align: center;
+    background: powderBlue;
+}
+.desc {
+    background: wheat;
+    width: 500px;
+}
+.tag {
+    background: salmon;
+    text-align: center;
+}
+.inputForm {
+    display: inline;
+    border: 4px black outset;
+    float: left;    /* Don't touch this */
+}

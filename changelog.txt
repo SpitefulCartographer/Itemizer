@@ -1,0 +1,68 @@
+11/27/2019 - Blake Benoit
+
+[JSF]
+- Added "Search For Tag", which finds and retreives items in the database with the specified tag.
+- Refactored methods in utils.DatabaseAccess class to return ArrayList instead of ResultSet so JSF won't shit the bed due to autoclose in try-with-resources. [SQLException: Operation not allowed after ResultSet closed]
+- Reorganized user input hforms into two different hforms: one for the basic button commands (Push, Load All, Nuke), and the other for Search to facilitate the 'searchTag' input.
+
+[SQL]
+- Created procedure "nukeDatabase" that truncates all tables and resets their autoincrement value.
+
+11/30/2019 - Blake Benoit
+
+[JSF]
+- Added a welcome page that contains 2 forms for logging in and signing up and 2 beans to associate with their functions. Logging in successfully takes the user to the itemizer page.
+- Added an Authentication utility class that handles signup and login authentication.
+- Added 4 new methods to DatabaseAccess: usernameExists(), passwordsMatch(), addUser(), and getUser().
+- New stylesheet classes were made for the login and signup forms on the welcome.
+
+[SQL]
+- Added a 'users' table to keep track of users' info.
+
+12/3/2019 - Blake Benoit
+
+[JSF]
+- Rewrote authenticateSignup() to provide console feedback.
+- Altered the SignupBean to use validateForSQL() on the setters for all fields.
+- Overloaded pushTable(), loadAllItems(), and loadItemsUsingTag() functions with a User parameter in DatabaseAccess. Modified these functions to find and insert/select using current user ID.
+- Added getUserId() in DatabaseAccess.
+- Rearranged the database control panel.
+- 
+
+[SQL]
+- Added new column 'user_id' to the items table.
+- Modified the 'nukeDatabase' procedure to reset the users table.
+
+12/9/19 - Blake Benoit
+
+[JSF]
+- Created method updateItem() in DatabaseAccess.
+- Modified pushTable() in TableBean to update that particular item if it already exists in the database.
+- Created method deleteItem() in DatabaseAccess.
+- Set session timeout from 30 seconds to 15 minutes. (web.xml)
+- Removed all instances of getUserId() and added the 'id' field to the User class. Deleted getUserId();
+- Added expungeItems() and expungeAll() to TableBean, replacing nukeDatabase(). 
+- Deleted the User-less parameter functions: pushTable(), loadAllItems(), and loadItemsUsingTag().
+
+[SQL]
+- Split procedure NukeDatabase() into two seperate procedures: TruncateItems() and TruncateUsers(). NukeDatabase() now calls these two procedures.
+
+12/14/19 - Blake Benoit
+
+[JSF]
+- Changed type declarations of many objects from ArrayList to List to maximize flexibility.
+- Added new class Sorting that handles sorting of items in the TableBean; Methods for sorting by item id, name, and price.
+- Implemented a simple JavaScript "Are you sure?" prompt for buttons in the danger zone.
+- Added appropriate 'size' tags to the name and tag fields in the input panel.
+- Table now displays item ids, if they have one.
+- Added class Sorting to sort items based on id, name, price, and tag.
+- Clicking on item headers for id, name, price and tag now sorts them accordingly.
+
+12/22/19 - Blake Benoit
+
+[JSF]
+- Changed look of the danger zone.
+
+[SQL]
+- Added trigger for insertion of users.
+- Added triggers for insertion, updates, and deletion of items.

@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Itemizer App</title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewAction action="#{tableBean.deleteAll()}" />
+        </f:metadata>
+        
+        <h:form>
+            <h:dataTable    id="maintable"
+                            value="#{tableBean.items}"
+                            var="item" styleClass="table"
+                            headerClass="tableHeader"
+                            footerClass="tableFooter"
+                            columnClasses="delete,edit,id,name,price,desc,tag"
+                            >                
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Delete" style="font-weight: bold"/>
+                    </f:facet>
+
+                    <h:commandButton value="Delete" action="#{tableBean.delete(item)}"/>
+                    
+                    <f:facet name="footer">
+                        <h:commandButton value="Clear" action="#{tableBean.deleteAll()}"/>
+                    </f:facet>
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Edit" style="font-weight: bold"/>
+                    </f:facet>
+
+                    <h:selectBooleanCheckbox value="#{item.editable}" onclick="submit()"/>
+
+                    <f:facet name="footer">
+                        <h:commandButton value="Save" action="#{tableBean.save()}"/>
+                    </f:facet>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">
+                        <h:commandLink value="Item ID" action="#{tableBean.sortById()}"
+                                       style="font-weight:bold; text-decoration:none; color:snow;"/>
+                    </f:facet>
+                    
+                    <h:outputText value="#{item.id}" rendered="#{item.id ge 0}"/>
+                    
+                    <f:facet name="footer"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:commandLink value="Item Name" action="#{tableBean.sortByName()}"
+                                       style="font-weight:bold; text-decoration:none; color:snow;"/>
+                    </f:facet>
+
+                    <h:inputText value="#{item.name}" rendered="#{item.editable}"
+                                 required="true" requiredMessage="Name is required."/>
+
+                    <h:outputText value="#{item.name}" rendered="#{not item.editable}"/>
+
+                    <f:facet name="footer">
+                        <h:outputText value="Table Entries: #{tableBean.items.size()}"/>
+                    </f:facet>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:commandLink value="Price" action="#{tableBean.sortByPrice()}"
+                                       style="font-weight:bold; text-decoration:none; color:snow;"/>
+                    </f:facet>
+
+                    <h:inputText value="#{item.price}" rendered="#{item.editable}"
+                                 required="true" requiredMessage="Price is required.">
+                        <f:convertNumber minFractionDigits="2"/>
+                    </h:inputText>
+
+                    <h:outputText value="#{item.price}" rendered="#{not item.editable}"/>
+
+                    <f:facet name="footer">
+                        <h:outputText value="#{tableBean.sum()}"/>
+                    </f:facet>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description" style="font-weight: bold"/>
+                    </f:facet>
+
+                    <h:inputTextarea value="#{item.description}" rendered="#{item.editable}"/>
+
+                    <h:outputText value="#{item.description}" rendered="#{not item.editable}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">
+                        <h:commandLink value="Tag" action="#{tableBean.sortByTag()}"
+                                       style="font-weight:bold; text-decoration:none; color:snow;"/>
+                    </f:facet>
+                    
+                    <h:inputText value="#{item.tag}" rendered="#{item.editable}"/>
+                    
+                    <h:outputText value="#{item.tag}" rendered="#{not item.editable}"/>
+                </h:column>
+                
+            </h:dataTable>
+
+        </h:form>
+        
+        <br/>
+                
+        <h:form>
+            <h:panelGrid id="inputPanel" columns="3" styleClass="inputForm">
+                Item Name:
+                <h:inputText id="name" value="#{tableBean.name}"
+                             required="true" requiredMessage="Name is required."/>
+                <h:message for="name"/>
+
+                Item Price:
+                <h:inputText id="price" value="#{tableBean.price}"
+                             required="true" requiredMessage="Price is required."/>
+                <h:message for="price"/>
+
+                Item Description:
+                <h:inputTextarea id="desc" value="#{tableBean.description}"/>
+                <h:message for="desc"/>
+                
+                Item Tag:
+                <h:inputText id="tag" value="#{tableBean.tag}"/>
+                <h:message for="tag"/>
+
+                <h:commandButton value="Add To Table" action="#{tableBean.add()}"/>
+            </h:panelGrid>
+        </h:form>
+        
+        <h:panelGrid id="databasePanel" columns="1" styleClass="inputForm">
+            <h:form>
+                <h:panelGrid columns="1">
+                    <h:outputText value="Database Controls"/>
+                    
+                    <h:commandButton value="Push to Database" action="#{tableBean.pushTable()}">
+                        <f:param name="user" value="#{loginBean.username}"/>
+                    </h:commandButton>
+                    
+                    <h:commandButton value="Load All from Database" action="#{tableBean.loadAllItems()}">
+                        <f:param name="user" value="#{loginBean.username}"/>
+                    </h:commandButton>
+                    
+                    <h:commandButton value="Delete Table from Database" action="#{tableBean.expungeItems()}">
+                        <f:param name="user" value="#{loginBean.username}"/>
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>
+            
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:commandButton value="Load Items with Tag" action="#{tableBean.searchItemsUsingTag()}">
+                        <f:param name="user" value="#{loginBean.username}"/>
+                    </h:commandButton>
+                    
+                    <h:inputText id="searchTag" value="#{tableBean.searchTag}" size="25"/>
+                </h:panelGrid>
+            </h:form>
+            
+            <h:form styleClass="dangerZone">
+                <h:panelGrid columns="1">
+                    <h:outputText value="Danger Zone"/>
+                    <h:commandButton value="Delete ALL Items" 
+                                     onclick="return confirm('This will delete ALL of your items from the database. Are you sure?')"
+                                     action="#{tableBean.expungeAll()}">
+                        <f:param name="user" value="#{loginBean.username}"/>
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </h:panelGrid>
+    </h:body>
+</html>
+
